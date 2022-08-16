@@ -1,11 +1,33 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <div class="columns">
-      <div class="column"><b-table :data="dataList" :columns="columns"></b-table></div>
-      <div class="column"><b-table :data="dataList" :columns="columns"></b-table></div>
-    </div>
-    
+    <section class="section is-medium">
+      <div class="columns">
+        <div class="column">
+          <section>
+            <b-field>
+              <b-table
+                :data="dataList"
+                :columns="columns"
+                :selected.sync="selected"
+                focusable
+              >
+              </b-table>
+            </b-field>
+          </section>
+        </div>
+        <div class="column is-one-fifth"></div>
+        <div class="column">
+          <b-table
+            :data="dataSelected"
+            :columns="columns"
+            :selected.sync="deSelected"
+            focusable
+          >
+          </b-table>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -16,7 +38,18 @@ export default {
     msg: String,
   },
   data() {
+    const data = [];
+    for (let i = 0; i < 10; i++) {
+      data.push({
+        id: i,
+        first_name: `$${i}_Default_Name_${i}`,
+      });
+    }
     return {
+      dataList: data,
+      selected: {},
+      deSelected: {},
+      dataSelected: [],
       columns: [
         {
           field: "first_name",
@@ -26,16 +59,22 @@ export default {
       ],
     };
   },
-  computed: {
-    dataList() {
-      const result = [];
-      for (let i = 0; i < 10; i++) {
-        result.push({
-          id: i,
-          first_name: `$${i}_Default_Name_${i}`,
-        });
-      }
-      return result;
+  watch: {
+    selected(newItem, oldItem) {
+      console.log("OLD: ", oldItem);
+      const index = this.dataList.findIndex((el) => el.id === newItem.id);
+      if (index < 0) return;
+      this.dataSelected.push(this.dataList[index]);
+      this.dataList.splice(index, 1);
+      this.dataSelected.sort((a, b) => a.id.toString().localeCompare(b.id.toString()));
+    },
+    deSelected(newItem, oldItem) {
+      console.log("OLD: ", oldItem);
+      const index = this.dataSelected.findIndex((el) => el.id === newItem.id);
+      if (index < 0) return;
+      this.dataList.push(this.dataSelected[index]);
+      this.dataSelected.splice(index, 1);
+      this.dataList.sort((a, b) => a.id.toString().localeCompare(b.id.toString()))
     },
   },
 };
