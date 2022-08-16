@@ -16,7 +16,30 @@
             </b-field>
           </section>
         </div>
-        <div class="column is-one-fifth"></div>
+        <div class="column is-one-fifth is-centered">
+          <section class="section is-centered">
+            <div class="column">
+              <b-icon
+                pack="fas"
+                icon="angle-double-right"
+                size="is-medium"
+              ></b-icon>
+            </div>
+            <div class="column">
+              <b-icon pack="fas" icon="angle-right" size="is-small"></b-icon>
+            </div>
+            <div class="column">
+              <b-icon pack="fas" icon="angle-left" size="is-small"></b-icon>
+            </div>
+            <div class="column">
+              <b-icon
+                pack="fas"
+                icon="angle-double-left"
+                size="is-medium"
+              ></b-icon>
+            </div>
+          </section>
+        </div>
         <div class="column">
           <b-table
             :data="dataSelected"
@@ -66,7 +89,9 @@ export default {
       if (index < 0) return;
       this.dataSelected.push(this.dataList[index]);
       this.dataList.splice(index, 1);
-      this.dataSelected.sort((a, b) => a.id.toString().localeCompare(b.id.toString()));
+      this.dataSelected.sort((a, b) =>
+        a.id.toString().localeCompare(b.id.toString())
+      );
     },
     deSelected(newItem, oldItem) {
       console.log("OLD: ", oldItem);
@@ -74,7 +99,9 @@ export default {
       if (index < 0) return;
       this.dataList.push(this.dataSelected[index]);
       this.dataSelected.splice(index, 1);
-      this.dataList.sort((a, b) => a.id.toString().localeCompare(b.id.toString()))
+      this.dataList.sort((a, b) =>
+        a.id.toString().localeCompare(b.id.toString())
+      );
     },
   },
 };
